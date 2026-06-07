@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  --color-editorial-light: #EFEFEF;
+  --color-editorial-dark: #121212;
+  --color-brand-orange: #FF6B00;
+  
+  --font-headline: 'Times New Roman', 'Cheltenham', 'Franklin Gothic', serif;
+  --font-body-text: 'Minion Pro', 'Imperial', 'Georgia', serif;
+}
+
+html, body {
+  background-color: var(--color-editorial-light);
+  color: #000000;
+  font-family: var(--font-body-text);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Custom styles for high-contrast classic newspaper styling merged with modern tech aesthetic */
+::selection {
+  background-color: var(--color-brand-orange);
+  color: #FFFFFF;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-editorial-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-brand-orange);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E05E00;
+}
