@@ -3,19 +3,37 @@ import { Newspaper, Send, CheckCircle2 } from 'lucide-react';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
-  const [showStatus, setShowStatus] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmitNewsletter = (e: React.FormEvent) => {
+  const handleSubmitNewsletter = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim() === '') return;
+    if (email.trim() === '' || isSubmitting) return;
     
-    // Trigger toast notification
-    setShowStatus(true);
-    setEmail('');
+    setIsSubmitting(true);
     
-    setTimeout(() => {
-      setShowStatus(false);
-    }, 4500);
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() })
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setStatusMessage(data.message || 'Inscrição Confirmada!');
+        setEmail('');
+      } else {
+        setStatusMessage(data.error || 'Ocorreu um erro.');
+      }
+    } catch (err) {
+      console.error(err);
+      setStatusMessage('Ocorreu um erro de rede. Tente novamente.');
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => setStatusMessage(null), 5000);
+    }
   };
 
   return (
@@ -42,12 +60,14 @@ export default function Footer() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Digite seu melhor e-mail" 
               className="bg-white border border-gray-300 text-black placeholder-gray-500 rounded-none px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange flex-grow transition-all"
+              disabled={isSubmitting}
             />
             <button 
               type="submit" 
-              className="bg-editorial-dark hover:bg-brand-orange text-white font-sans text-xs uppercase tracking-wider font-bold px-6 py-3 rounded-none transition-colors whitespace-nowrap cursor-pointer flex items-center justify-center gap-2 active:scale-95"
+              disabled={isSubmitting}
+              className="bg-editorial-dark hover:bg-brand-orange text-white font-sans text-xs uppercase tracking-wider font-bold px-6 py-3 rounded-none transition-colors whitespace-nowrap cursor-pointer flex items-center justify-center gap-2 active:scale-95 disabled:opacity-75 disabled:cursor-not-allowed"
             >
-              Garantir Acesso <Send className="w-3.5 h-3.5" />
+              {isSubmitting ? 'Enviando...' : 'Garantir Acesso'} {!isSubmitting && <Send className="w-3.5 h-3.5" />}
             </button>
           </form>
         </div>
@@ -71,30 +91,21 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Center navigation */}
-        <div className="flex flex-wrap justify-center gap-6 text-xs text-gray-600 font-sans">
-          <a href="#hero" className="hover:text-brand-orange transition-colors">Destaque</a>
-          <a href="#grid" className="hover:text-brand-orange transition-colors">Mais Notícias</a>
-          <a href="#newsletter" className="hover:text-brand-orange transition-colors">Inscrição</a>
-          <a href="https://gnews.io" target="_blank" rel="noopener noreferrer" className="hover:text-brand-orange transition-colors">Agências de Notícias</a>
-        </div>
-
         {/* Right side with deployment status / github page info */}
         <div className="text-center md:text-right text-xs text-gray-500 font-sans">
-          <p>Pronto para ser hospedado no <strong className="text-black font-semibold">GitHub Pages</strong></p>
           <p className="text-[10px] mt-1 text-gray-400">Edição Especial AI Studio</p>
         </div>
 
       </div>
 
       {/* FLOAT ANIMATED NOTIFICATION (TOAST) */}
-      {showStatus && (
+      {statusMessage && (
         <div className="fixed bottom-6 right-6 z-50">
           <div className="bg-editorial-dark border-l-4 border-brand-orange text-white px-5 py-4 rounded-none shadow-2xl flex items-start gap-3 max-w-sm">
             <CheckCircle2 className="w-5 h-5 text-brand-orange flex-shrink-0 mt-0.5" />
             <div>
-              <h4 className="font-bold text-sm font-sans mb-0.5 text-white">Inscrição Confirmada!</h4>
-              <p className="text-xs text-gray-300">Seu e-mail está agora registrado na nossa base de leitores.</p>
+              <h4 className="font-bold text-sm font-sans mb-0.5 text-white">Mensagem</h4>
+              <p className="text-xs text-gray-300">{statusMessage}</p>
             </div>
           </div>
         </div>

@@ -23,12 +23,6 @@ export default function Hero({ artigo, onSelect }: HeroProps) {
           
           {/* Main Info Column */}
           <div className="lg:col-span-7 flex flex-col justify-center order-2 lg:order-1">
-            <div className="flex flex-wrap items-center gap-3 mb-5">
-              <span className="bg-brand-orange text-white text-xs font-bold font-sans tracking-widest uppercase px-3 py-1 rounded-none">
-                {artigo.source.name}
-              </span>
-            </div>
-            
             <h2 
               onClick={onSelect}
               className="font-headline font-bold text-3.5xl md:text-5xl lg:text-5.5xl text-white tracking-tight leading-tight hover:text-brand-orange transition-colors cursor-pointer mb-6"

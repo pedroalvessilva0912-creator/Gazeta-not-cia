@@ -47,7 +47,7 @@ export const database: Database = {
       "title": "Descoberta na medicina pode acelerar o tratamento de doenças genéticas", 
       "description": "Cientistas conseguem mapear novos caminhos celulares utilizando simulações computacionais de alta performance.", 
       "url": "https://gnews.io", 
-      "image": "/src/assets/images/regenerated_image_1780853903511.webp", 
+      "image": "https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=800&q=80", 
       "publishedAt": "2026-06-04T13:00:00Z", 
       "source": { "name": "BioTech Daily" } 
     },

@@ -64,7 +64,7 @@ export default function Header() {
             href="#newsletter" 
             className="bg-editorial-dark text-white px-4 py-2 rounded-none text-xs uppercase tracking-wider transition-all hover:bg-brand-orange font-bold text-center"
           >
-            Assinar
+            Inscreva-se
           </a>
         </div>
 
